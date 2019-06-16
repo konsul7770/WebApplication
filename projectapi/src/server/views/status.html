@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="../mystyles.css">
+  <title>Status</title>
+<script type="text/javascript">
+function func(){
+const url = "http://localhost:1337/users";
+fetch(url,{method: "GET",mode: "no-cors"})
+.then(res => res.json())
+.then(data =>{
+buildTable(data.data);
+});
+
+function buildTable(data) {
+    var table = document.createElement("table");
+    table.className="gridtable";
+    var thead = document.createElement("thead");
+    var tbody = document.createElement("tbody");
+    var headRow = document.createElement("tr");
+    ["Id","Username"].forEach(function(el) {
+      var th=document.createElement("th");
+      th.appendChild(document.createTextNode(el));
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead); 
+    for (d of data){
+      var trow = document.createElement("tr");
+      for (prop in d){
+        if (prop != 'password') {
+          var td = document.createElement("td");
+          td.appendChild(document.createTextNode(d[prop]));
+        trow.appendChild(td);
+        }
+      }
+      tbody.appendChild(trow);
+    }
+    table.appendChild(tbody);
+    document.getElementById("tab").appendChild(table);
+    document.getElementById("rf").href = "#";             
+}
+
+}
+</script>
+</head>
+<body>
+	<div class="ltop">
+	  <a href="/">Home</a>
+	  <a href="#">Services</a>
+	  <a href="#">About</a>
+     <a id="rf" href="javascript:func()" style="float:right">User List</a>
+	  <a href="/auth/logout" style="float:right">Logout</a>
+	</div>
+  <p style="text-align:center;">You are authenticated.</p>
+  <div id="tab"></div>
+</body>
+</html>
